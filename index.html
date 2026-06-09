@@ -275,7 +275,7 @@
       });
 
       // ------------------------------------------
-      // 📲 修正：スマホ向けに最適化した一覧表（Table）の動的作成
+      // 📲 スマホ向けに最適化した一覧表（Table）の動的作成
       // ------------------------------------------
       rankings.forEach(item => {
         const card = document.createElement("div");
@@ -310,12 +310,14 @@
             if (rawString) {
               hasData = true;
               
-              // カッコ内のすべての数字を取り出す（例: ["42", "39", ... ]）
+              // カッコ内のすべての数字を取り出す修正ロジック
               const scores = [];
               const regex = /\(([^)]+)\)/g;
               let match;
               while ((match = regex.exec(rawString)) !== null) {
-                scores.push(match[1].trim());
+                if (match[1]) {
+                  scores.push(match[1].trim());
+                }
               }
               
               if (scores.length > 0) {
@@ -323,7 +325,7 @@
               }
             }
 
-            // テーブルに1行分をはめ込む（チーム名は長すぎたら自動で「...」に省略されます）
+            // テーブルに1行分をはめ込む
             compactHistoryHtml += `
               <tr>
                 <td class="col-bold" style="text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80px;">${item.teamName}</td>
