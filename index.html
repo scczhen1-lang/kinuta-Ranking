@@ -282,7 +282,7 @@
         card.className = "rank-card";
         
         // ------------------------------------------
-        // 【元々の機能の完全復元】交代選手も網羅する個人履歴リストの作成
+        // 交代選手も網羅する個人履歴リストの作成（元々の機能）
         // ------------------------------------------
         let playerMapInTeam = {};
         let hasData = false;
@@ -334,7 +334,7 @@
         }
 
         // ------------------------------------------
-        // 📲 【新規追加機能】チーム履歴確認用のコンパクトな一覧表（Table）の作成
+        // 📲 【横幅を極限まで最適化】チーム履歴確認用のコンパクトな一覧表（Table）の作成
         // ------------------------------------------
         let compactTableHtml = `
           <div class="sm-table-container" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 12px;">
@@ -342,10 +342,10 @@
             <table class="sm-table">
               <thead>
                 <tr>
-                  <th style="width: 32%;">チーム</th>
-                  <th style="width: 13%;">回</th>
-                  <th style="width: 17%;">合計</th>
-                  <th style="width: 38%;">5人の内訳</th>
+                  <th style="width: 25%; padding: 4px 2px;">チーム</th>
+                  <th style="width: 10%; padding: 4px 2px;">回</th>
+                  <th style="width: 15%; padding: 4px 2px;">合計</th>
+                  <th style="width: 50%; padding: 4px 2px;">5人の内訳</th>
                 </tr>
               </thead>
               <tbody>
@@ -357,7 +357,7 @@
             const roundScore = item.roundDetails[roundKey] !== undefined ? item.roundDetails[roundKey] : "-";
             const rawString = item.memberHistory[roundKey] || "";
 
-            // 💡 選手名は一切入れず、カッコ内の得点数字だけを「 / 」で繋ぐ処理
+            // 💡 スラッシュの前後スペースを無くして「/」で詰めて結合する（文字幅を縮小）
             let scoreOnlyLine = "-";
             if (rawString) {
               const scores = [];
@@ -369,16 +369,17 @@
                 }
               }
               if (scores.length > 0) {
-                scoreOnlyLine = scores.join(' / ');
+                scoreOnlyLine = scores.join('/'); // スペースを排除して「42/39/30/43/38」にします
               }
             }
 
+            // 内訳セル（td）に文字詰め用のCSS（letter-spacingやpaddingの排除）を追加
             compactTableHtml += `
               <tr>
-                <td class="col-bold" style="text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80px;">${item.teamName}</td>
-                <td>${r}</td>
-                <td class="col-score">${roundScore}</td>
-                <td class="col-nums">${scoreOnlyLine}</td>
+                <td class="col-bold" style="text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:70px; padding: 4px 2px;">${item.teamName}</td>
+                <td style="padding: 4px 2px;">${r}</td>
+                <td class="col-score" style="padding: 4px 4px 4px 2px;">${roundScore}</td>
+                <td class="col-nums" style="padding: 4px 1px; font-size: 0.72rem; letter-spacing: -0.6px; white-space: nowrap;">${scoreOnlyLine}</td>
               </tr>
             `;
           }
@@ -391,7 +392,7 @@
         `;
 
         // ------------------------------------------
-        // HTMLカードの結合（個人履歴リストの下に確認用テーブルを配置）
+        // HTMLカードの結合
         // ------------------------------------------
         card.innerHTML = `
           <div class="card-main-content">
