@@ -251,7 +251,10 @@ td, th {
 <script>
     // ⚠️ここにGASでデプロイした「ウェブアプリのURL (WEBAPP_URL)」を貼り付けてください
     const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzpLlCxrP8OyWBICrLwADPf4i_GajoEYI7GM13ryn7wMxGkih_8MURxK5slDzNqMDacsQ/exec"; 
-
+const eventId =
+  new URLSearchParams(
+    location.search
+  ).get("event");
 
 window.onerror = function(
   msg,
