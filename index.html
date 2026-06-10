@@ -349,12 +349,12 @@ function renderTeamRanking(rankings) {
   const maxTeamScore = Math.max(...rankings.map(t => t.totalScore || 1));
   
   // 💡【安全ガード】cachedData が無くてもエラーにならないように修正
-  let maxRound = 4;
+  let maxRound = 5;
   try {
     if (typeof cachedData !== 'undefined' && cachedData && cachedData.maxRound) {
       maxRound = cachedData.maxRound;
     }
-  } catch(e) { maxRound = 4; }
+  } catch(e) { maxRound = 5; }
 
   rankings.forEach(item => {
     let barSegmentsHtml = "";
@@ -427,9 +427,9 @@ function renderTeamRanking(rankings) {
         players.forEach(player => {
           if (!player) return;
           const match = player.match(/^(.+?)\((.+?)\)$/);
-          if (match) {
-            const pName = match[1].trim();
-            const pScore = parseInt(match[2], 10) || 0;
+          if (match && match[1] && match[2]) {
+            const pName = match[1].trim(); // [1]を追加
+            const pScore = parseInt(match[2], 10) || 0; // [2]を追加
 
             if (!playerMapInTeam[pName]) {
               playerMapInTeam[pName] = { scores: [], total: 0, count: 0 };
