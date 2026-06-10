@@ -111,7 +111,36 @@
     .chart-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 1.05rem; }
     .chart-axis-label { min-width: 90px; max-width: 90px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; text-align: right; color: #000; }
     .chart-bar-area { flex: 1; position: relative; }
-    
+　　 /* 💥【新設】シニア向けグラフ横軸目盛り用のスタイル */
+    .chart-scale-container {
+      display: flex;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      padding-left: 90px; /* 💡チーム名の幅（90px）と完全に一致させて位置をピッタリ揃える */
+      width: calc(100% - 55px); /* 💡右側の合計点数エリア（55px）の手前までを幅とする */
+    }
+    .scale-axis {
+      flex: 1;
+      position: relative;
+      height: 25px; /* 目盛りの高さ */
+    }
+    .scale-tick {
+      position: absolute;
+      bottom: 12px; /* バーのすぐ下に線を配置 */
+      width: 2px;
+      height: 10px; /* 目盛り線の長さ */
+      background-color: #111111; /* 💡真っ黒で太い目盛り線 */
+    }
+    .scale-label {
+      position: absolute;
+      bottom: -15px; /* 数字の位置 */
+      transform: translateX(-50%); /* 数字の中央を目盛り線に合わせる */
+      font-size: 1.1rem; /* 💡高齢者に見やすい大きな数字 */
+      font-weight: 900;  /* 💡極太文字 */
+      color: #000000;
+    }
+
+      
     /* グラフのバーを太く見やすく */
     .stacked-bar-container { background: #dddddd; border-radius: 6px; overflow: hidden; display: flex; height: 26px; width: 100%; border: 1px solid #bbb; }
     .bar-segment { height: 100%; text-align: center; color: white; font-size: 0.85rem; font-weight: 900; line-height: 24px; transition: width 0.3s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
