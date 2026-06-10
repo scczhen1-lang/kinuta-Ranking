@@ -40,7 +40,16 @@
     .content-panel.active { display: block; }
     
     /* 📋 カードデザイン */
-    .rank-card { background: var(--card-bg); border-radius: 8px; padding: 18px; margin-bottom: 12px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; cursor: pointer; }
+ /* 🛠️ .rank-card の修正イメージ */
+    .rank-card {
+      background: var(--card-bg);
+      border-radius: 12px; /* 💡角丸を少し優しく広くする */
+      padding: 18px;
+      margin-bottom: 12px;
+      border: none; /* 💡ベタ塗りの枠線は思い切って消す！ */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 💡上品でクッキリ浮き出る影に変更 */
+     }
+
     .card-main-content { display: flex; align-items: center; }
     
     /* 🥇 メダルの巨大化 ＆ フチ取り強化 */
@@ -59,27 +68,25 @@
       border: 2px solid #ccc;
     }
     /* 1位〜3位は視認性の高いクッキリフチ取り（白フチ＋黒フチ）を施した巨大メダルに */
-    .rank-1 { 
-      background-color: #f7c11e; 
-      color: #000000; 
-      font-size: 2.1rem; 
-      border: 3px solid #b58600;
-      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff; /* 白フチ */
-    }
-    .rank-2 { 
-      background-color: #cccccc; 
-      color: #000000; 
-      font-size: 1.9rem; 
-      border: 3px solid #888888;
-      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff;
-    }
-    .rank-3 { 
-      background-color: #df9c57; 
-      color: #000000; 
-      font-size: 1.8rem; 
-      border: 3px solid #9c540a;
-      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff;
-    }
+/* 🛠️ メダル部分の修正イメージ */
+.rank-1 { 
+  background: linear-gradient(135deg, #ffd700, #ffa500); /* 💡金〜オレンジのグラデーション */
+  color: #000000; 
+  font-size: 2.1rem; 
+  border: 3px solid #b58600;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.4); /* 💡内側に光の筋を入れる */
+}
+.rank-2 { 
+  background: linear-gradient(135deg, #f0f0f0, #b0b0b0); /* 💡銀のグラデーション */
+  color: #000000; 
+  border: 3px solid #777;
+}
+.rank-3 { 
+  background: linear-gradient(135deg, #f4a460, #cd7f32); /* 💡銅のグラデーション */
+  color: #000000; 
+  border: 3px solid #8b4513;
+}
+
     
     .info-box { flex: 1; }
     
@@ -88,15 +95,17 @@
     .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
     
     /* 💡【ご要望】チーム名バッジの背景を黄色・太文字、かつフチを黒くして視認性爆上げ */
-    .team-tag { 
-      font-size: 1.05rem; /* 💡文字サイズを大幅拡大 */
-      color: #000000 !important; 
-      background-color: #ffeb3b !important; /* 💡鮮やかなイエロー背景 */
-      padding: 3px 10px; 
-      border-radius: 6px; 
-      font-weight: 900 !important; /* 💡超太文字 */
-      border: 2px solid #000000; /* 💡黒いフチで囲ってハッキリ識別 */
-    }
+    /* 🛠️ .team-tag の修正イメージ */
+.team-tag { 
+  font-size: 1.05rem;
+  color: #000000 !important; 
+  background-color: #ffe082 !important; /* 💡少し目に優しいパステル調の明るい黄色に */
+  padding: 4px 14px; /* 💡横の余白を広げてリボン風にする */
+  border-radius: 20px; /* 💡完全に丸いカプセル型にしてスマートに */
+  font-weight: 900 !important; 
+  border: 2px solid #000000; 
+}
+
     
     .sub-detail { font-size: 1.05rem; font-weight: bold; color: #444; white-space: normal; word-break: break-all; line-height: 1.5; } /* 💡内訳の文字も太く大きく */
     
@@ -142,7 +151,19 @@
 
       
     /* グラフのバーを太く見やすく */
-    .stacked-bar-container { background: #dddddd; border-radius: 6px; overflow: hidden; display: flex; height: 26px; width: 100%; border: 1px solid #bbb; }
+    /* 🛠️ .stacked-bar-container の修正イメージ */
+.stacked-bar-container { 
+  background: #dddddd; 
+  border-radius: 8px; /* 💡少し角を丸くする */
+  overflow: hidden; 
+  display: flex; 
+  height: 28px; 
+  width: 100%; 
+  border: 2px solid #555; /* 💡枠線を太くして視認性アップ */
+  /* 💡【隠し味】バーの上にガラスのようなツヤを出すグラデーション */
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
+}
+
     .bar-segment { height: 100%; text-align: center; color: white; font-size: 0.85rem; font-weight: 900; line-height: 24px; transition: width 0.3s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
     .chart-row-score { min-width: 55px; text-align: left; padding-left: 10px; font-weight: 900; font-size: 1.2rem; color: var(--primary-color); }
     
