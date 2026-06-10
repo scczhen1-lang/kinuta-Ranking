@@ -385,29 +385,7 @@ function renderTeamRanking(rankings) {
     chartContainer.appendChild(chartRow);
   });
 
-  // 全チームのグラフの下に目盛りを配置
-  const scaleDiv = document.createElement("div");
-  scaleDiv.className = "chart-scale-container";
-  scaleDiv.innerHTML = `
-    <div class="scale-axis">
-      <div class="scale-tick" style="left: 0%;"></div>
-      <div class="scale-label" style="left: 0%;">0</div>
-      
-      <div class="scale-tick" style="left: 25%;"></div>
-      <div class="scale-label" style="left: 25%;">100</div>
-      
-      <div class="scale-tick" style="left: 50%;"></div>
-      <div class="scale-label" style="left: 50%;">200</div>
-      
-      <div class="scale-tick" style="left: 75%;"></div>
-      <div class="scale-label" style="left: 75%;">300</div>
-      
-      <div class="scale-tick" style="left: 100%;"></div>
-      <div class="scale-label" style="left: 100%;">400</div>
-    </div>
-  `;
-  chartContainer.appendChild(scaleDiv);
-
+  
   // ------------------------------------------
   // ② チーム順位表 ＆ 詳細内訳のレンダリング
   // ------------------------------------------
