@@ -7,69 +7,133 @@
   <link rel="apple-touch-icon" href="icon.png?v=5"> 
   <link rel="icon" type="image/png" sizes="192x192" href="icon.png?v=5"> 
   <meta name="apple-mobile-web-app-title" content="輪投げ大会"> 
-  <style>
-    :root { --primary-color: #00b900; --secondary-color: #333; --bg-color: #f4f6f9; --card-bg: #fff; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
-    body { background-color: var(--bg-color); color: var(--secondary-color); padding-bottom: 30px; }
+    <style>
+    :root { 
+      --primary-color: #008f00; /* 💡やや濃い緑にして、白文字とのコントラストを高めました */
+      --secondary-color: #111111; /* 💡文字色をより真っ黒に近くし、ハッキリさせました */
+      --bg-color: #eef2f7; 
+      --card-bg: #ffffff; 
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; }
     
-    header { background: linear-gradient(135deg, var(--primary-color), #009900); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    h1 { font-size: 1.3rem; margin-bottom: 0px; }
+    body { 
+      background-color: var(--bg-color); 
+      color: var(--secondary-color); 
+      padding-bottom: 40px; 
+      font-size: 1.15rem; /* 💡全体の基本文字サイズを約1.2倍大きくしました */
+      line-height: 1.5;
+    }
     
-    .header-btn { display: inline-block; margin-top: 8px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-    .header-btn:active { background: rgba(255,255,255,0.4); }
+    header { background: linear-gradient(135deg, var(--primary-color), #007700); color: white; padding: 18px 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
+    h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0px; } /* 💡タイトルを太く大きく */
+    
+    .header-btn { display: inline-block; margin-top: 10px; background: rgba(255,255,255,0.25); border: 2px solid white; color: white; padding: 6px 18px; border-radius: 20px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: background 0.2s; }
+    .header-btn:active { background: rgba(255,255,255,0.45); }
 
-    .tabs { display: flex; background: white; margin: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); width: calc(100% - 30px); }
-    .tab-btn { flex: 1; width: 50%; padding: 14px 10px; text-align: center; background: none; border: none; font-size: 1rem; font-weight: bold; color: #666; cursor: pointer; display: block; }
+    /* タブ切り替えボタン */
+    .tabs { display: flex; background: white; margin: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: calc(100% - 30px); border: 1px solid #ccc; }
+    .tab-btn { flex: 1; width: 50%; padding: 16px 10px; text-align: center; background: none; border: none; font-size: 1.25rem; font-weight: 900; color: #444; cursor: pointer; display: block; }
     .tab-btn.active { background-color: var(--primary-color) !important; color: white !important; }
     
     .container { padding: 0 15px; }
     .content-panel { display: none; }
     .content-panel.active { display: block; }
     
-    /* カードデザイン */
-    .rank-card { background: var(--card-bg); border-radius: 8px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; }
+    /* 📋 カードデザイン */
+    .rank-card { background: var(--card-bg); border-radius: 8px; padding: 18px; margin-bottom: 12px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; cursor: pointer; }
     .card-main-content { display: flex; align-items: center; }
-    .rank-num { font-size: 1.3rem; font-weight: bold; inline-size: 40px; text-align: center; margin-right: 15px; color: #888; }
-    .rank-1 { color: #dfac11; font-size: 1.6rem; }
-    .rank-2 { color: #b1b1b1; font-size: 1.5rem; }
-    .rank-3 { color: #b68553; font-size: 1.4rem; }
+    
+    /* 🥇 メダルの巨大化 ＆ フチ取り強化 */
+    .rank-num { 
+      font-size: 1.6rem; 
+      font-weight: 900; 
+      min-width: 55px; /* 💡幅を広げて数字が隠れないように */
+      max-width: 55px;
+      height: 55px;
+      line-height: 51px; /* 💡円の中で中央に配置 */
+      text-align: center; 
+      margin-right: 15px; 
+      color: #333; 
+      background: #e6e6e6; /* 💡4位以降も分かりやすく丸バッジ化 */
+      border-radius: 50%;
+      border: 2px solid #ccc;
+    }
+    /* 1位〜3位は視認性の高いクッキリフチ取り（白フチ＋黒フチ）を施した巨大メダルに */
+    .rank-1 { 
+      background-color: #f7c11e; 
+      color: #000000; 
+      font-size: 2.1rem; 
+      border: 3px solid #b58600;
+      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff; /* 白フチ */
+    }
+    .rank-2 { 
+      background-color: #cccccc; 
+      color: #000000; 
+      font-size: 1.9rem; 
+      border: 3px solid #888888;
+      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff;
+    }
+    .rank-3 { 
+      background-color: #df9c57; 
+      color: #000000; 
+      font-size: 1.8rem; 
+      border: 3px solid #9c540a;
+      text-shadow: 2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff;
+    }
+    
     .info-box { flex: 1; }
     
-    .name-main { font-size: 1.2rem; font-weight: bold; color: #111; line-height: 1.3; }
-    .name-container { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-    .team-tag { font-size: 0.75rem; color: #666; background: #eee; padding: 2px 6px; border-radius: 4px; font-weight: normal; }
+    /* 名前とチーム名バッジ */
+    .name-main { font-size: 1.4rem; font-weight: 900; color: #000000; line-height: 1.4; } /* 💡名前を1.4remの極太に */
+    .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
     
-    .sub-detail { font-size: 0.8rem; color: #777; white-space: normal; word-break: break-all; line-height: 1.4; }
-    .score-box { text-align: right; min-inline-size: 70px; }
-    .score-num { font-size: 1.4rem; font-weight: bold; color: var(--primary-color); }
-    .score-unit { font-size: 0.8rem; color: #777; }
+    /* 💡【ご要望】チーム名バッジの背景を黄色・太文字、かつフチを黒くして視認性爆上げ */
+    .team-tag { 
+      font-size: 1.05rem; /* 💡文字サイズを大幅拡大 */
+      color: #000000 !important; 
+      background-color: #ffeb3b !important; /* 💡鮮やかなイエロー背景 */
+      padding: 3px 10px; 
+      border-radius: 6px; 
+      font-weight: 900 !important; /* 💡超太文字 */
+      border: 2px solid #000000; /* 💡黒いフチで囲ってハッキリ識別 */
+    }
+    
+    .sub-detail { font-size: 1.05rem; font-weight: bold; color: #444; white-space: normal; word-break: break-all; line-height: 1.5; } /* 💡内訳の文字も太く大きく */
+    
+    /* 得点表示 */
+    .score-box { text-align: right; min-width: 85px; }
+    .score-num { font-size: 1.8rem; font-weight: 900; color: var(--primary-color); } /* 💡合計点数を特大に */
+    .score-unit { font-size: 1rem; font-weight: bold; color: #333; margin-left: 1px; }
 
-    /* 独立したチーム比較グラフ用のデザイン */
-    .chart-card { background: var(--card-bg); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .chart-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 12px; color: #444; border-left: 4px solid var(--primary-color); padding-left: 8px; }
-    .chart-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.8rem; }
-    .chart-axis-label { min-inline-size: 75px; max-inline-size: 75px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px; text-align: right; }
+    /* 📊 グラフデザイン */
+    .chart-card { background: var(--card-bg); border-radius: 8px; padding: 18px; margin-bottom: 15px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+    .chart-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 14px; color: #111; border-left: 6px solid var(--primary-color); padding-left: 10px; }
+    .chart-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 1.05rem; }
+    .chart-axis-label { min-width: 90px; max-width: 90px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; text-align: right; color: #000; }
     .chart-bar-area { flex: 1; position: relative; }
-    .stacked-bar-container { background: #eee; border-radius: 4px; overflow: hidden; display: flex; height: 18px; inline-size: 100%; }
-    .bar-segment { height: 100%; text-align: center; color: white; font-size: 0.65rem; font-weight: bold; line-height: 18px; transition: width 0.3s; }
-    .chart-row-score { min-inline-size: 40px; text-align: left; padding-left: 8px; font-weight: bold; color: var(--primary-color); }
     
-    .r-color-1 { background-color: #3b82f6; } 
-    .r-color-2 { background-color: #10b981; } 
-    .r-color-3 { background-color: #f59e0b; } 
-    .r-color-4 { background-color: #ef4444; } 
-    .r-color-5 { background-color: #8b5cf6; }
-    .r-color-6 { background-color: #ec4899; }
-    .r-color-default { background-color: #6b7280; }
+    /* グラフのバーを太く見やすく */
+    .stacked-bar-container { background: #dddddd; border-radius: 6px; overflow: hidden; display: flex; height: 26px; width: 100%; border: 1px solid #bbb; }
+    .bar-segment { height: 100%; text-align: center; color: white; font-size: 0.85rem; font-weight: 900; line-height: 24px; transition: width 0.3s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+    .chart-row-score { min-width: 55px; text-align: left; padding-left: 10px; font-weight: 900; font-size: 1.2rem; color: var(--primary-color); }
+    
+    /* グラフの色も濁りのないハッキリしたユニバーサル配色に調整 */
+    .r-color-1 { background-color: #1e3a8a; } /* 濃い青 */
+    .r-color-2 { background-color: #047857; } /* 濃い緑 */
+    .r-color-3 { background-color: #d97706; } /* 濃いオレンジ */
+    .r-color-4 { background-color: #dc2626; } /* 濃い赤 */
+    .r-color-5 { background-color: #6d28d9; } /* 濃い紫 */
+    .r-color-6 { background-color: #be185d; } /* 濃いピンク */
+    .r-color-default { background-color: #4b5563; }
 
-    /* チーム詳細アコーディオン用設定（中身に応じて100%自動全開） */
+    /* アコーディオン */
     .member-history-panel { 
       display: none; 
-      margin-block-start: 10px; 
-      padding: 6px; 
-      border-block-start: 1px dashed #ddd; 
-      background: #fafafa; 
-      border-radius: 4px; 
+      margin-top: 12px; 
+      padding: 10px; 
+      border-top: 2px dashed #999; 
+      background: #fdfdfd; 
+      border-radius: 6px; 
       height: auto !important;
       max-height: none !important;
       overflow: visible !important;
@@ -78,48 +142,53 @@
       display: block !important; 
     }
 
-    /* 📲 【新設】スマホ専用のコンパクト一覧表（Table）スタイル */
+    /* 📲 スマホ専用一覧表（Table）のシニア向け超くっきり強化 */
     .sm-table-container {
       width: 100%;
       overflow-x: auto;
-      margin-top: 5px;
+      margin-top: 8px;
+      border: 1px solid #999;
+      border-radius: 4px;
     }
     .sm-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.75rem; /* スマホ用に文字サイズを最適化 */
+      font-size: 1.05rem; /* 💡小さな文字を廃止し、表の中も1.05remに大きく！ */
     }
     .sm-table th, .sm-table td {
-      padding: 5px 3px;
-      border: 1px solid #e0e0e0; /* 格子状の枠線をくっきり表示 */
+      padding: 8px 6px; /* 💡タップしやすく、見やすいように余白を拡大 */
+      border: 2px solid #666666; /* 💡薄いグレーの線をやめ、濃い太枠線にして格子をクッキリ化 */
       text-align: center;
       vertical-align: middle;
+      color: #000000;
     }
     .sm-table th {
-      background-color: #eaeaea;
-      font-weight: bold;
-      color: #333;
+      background-color: #d5d5d5; /* 💡ヘッダー背景をやや濃くして白文字・黒文字を際立たせる */
+      font-weight: 900;
+      color: #000000;
     }
     .sm-table td.col-bold {
-      font-weight: bold;
+      font-weight: 900;
     }
     .sm-table td.col-score {
-      font-weight: bold;
-      color: #d81b60; /* 合計数字を目立たせる */
+      font-weight: 900;
+      color: #c2185b; /* 💡合計点数は、よりハッキリした濃いローズピンクに変更 */
       text-align: right;
-      padding-right: 4px;
+      padding-right: 6px;
+      font-size: 1.15rem;
     }
     .sm-table td.col-nums {
-      font-family: monospace; /* 数字の間隔を揃える */
-      color: #222;
-      font-size: 0.8rem;
-      letter-spacing: -0.3px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-weight: bold;
+      color: #000;
+      font-size: 1.1rem;
     }
 
-    #loader { text-align: center; padding: 40px 0; font-size: 1rem; color: #666; }
-    .spinner { animation: spin 1s linear infinite; margin-bottom: 10px; font-size: 2rem; display: inline-block; }
+    #loader { text-align: center; padding: 50px 0; font-size: 1.3rem; font-weight: bold; color: #333; }
+    .spinner { animation: spin 1s linear infinite; margin-bottom: 12px; font-size: 2.5rem; display: inline-block; color: var(--primary-color); }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
+
 </head>
 <body>
 
@@ -317,14 +386,20 @@
           const pData = playerMapInTeam[pName];
           const formattedHistory = pData.scores.join(" / ");
           originalHistoryHtml += `
-            <div class="player-row-in-team">
-              <span style="font-size: 0.85rem; font-weight: bold; color: #444;">${pName}</span>
-              <span style="font-size: 0.85rem; color: #666; font-weight: bold;">
-                <span style="color: #999; font-size: 0.75rem; font-weight: normal; margin-right: 4px;">履歴:</span>
-                ${formattedHistory}
-                <span style="color: #888; font-size: 0.75rem; font-weight: normal; margin-left: 4px;">(${pData.count}試合 / 計 ${pData.total}点)</span>
-              </span>
-            </div>
+            <div class="player-row-in-team" style="margin-bottom: 8px; padding: 4px 0; border-bottom: 1px dotted #ccc;">
+              <!-- 💡 選手名を大きく、真っ黒な極太文字に -->
+              <div style="font-size: 1.2rem; font-weight: 900; color: #111; margin-bottom: 2px;">
+                ${pName}
+              </div>
+              <!-- 💡 履歴スコアも大きく、文字と数字をハッキリ識別できるように改行・太字化 -->
+              <div style="font-size: 1.1rem; color: #111; font-weight: bold; line-height: 1.4;">
+                <span style="color: #444; font-size: 1rem; font-weight: 900; margin-right: 6px; background: #eee; padding: 1px 5px; border-radius: 3px;">履歴</span>
+                <span style="font-size: 1.15rem; color: #000; letter-spacing: 0.5px;">${formattedHistory}</span>
+                <span style="color: #222; font-size: 1rem; font-weight: 900; margin-left: 8px; display: inline-block;">
+                  (${pData.count}試合 / 計 <span style="color: #008f00; font-size: 1.1rem;">${pData.total}点</span>)
+                </span>
+              </div>
+            </div>`;
           `;
         });
         originalHistoryHtml += '</div>';
