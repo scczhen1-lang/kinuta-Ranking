@@ -322,14 +322,19 @@
     /**
      * チーム別ランキング ＆ 独立全体比較グラフのレンダリング
      */
-    function renderTeamRanking(rankings) {
+function renderTeamRanking(rankings) {
   const chartContainer = document.getElementById("team-chart-container");
   const listContainer = document.getElementById("team-list-container");
+  
+  if (!chartContainer || !listContainer) {
+    console.error("必要なコンテナが見つかりません。");
+    return;
+  }
   
   chartContainer.innerHTML = "";
   listContainer.innerHTML = "";
 
-  if (rankings.length === 0) {
+  if (!rankings || rankings.length === 0) {
     listContainer.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>記録がありません。</p>";
     chartContainer.style.display = "none";
     return;
@@ -342,18 +347,24 @@
   chartContainer.innerHTML = `<div class="chart-title">🏆 チーム総得点 リアルタイム比較</div>`;
   
   const maxTeamScore = Math.max(...rankings.map(t => t.totalScore || 1));
-  const maxRound = cachedData ? cachedData.maxRound : 4;
+  
+  // 💡【安全ガード】cachedData が無くてもエラーにならないように修正
+  let maxRound = 4;
+  try {
+    if (typeof cachedData !== 'undefined' && cachedData && cachedData.maxRound) {
+      maxRound = cachedData.maxRound;
+    }
+  } catch(e) { maxRound = 4; }
 
   rankings.forEach(item => {
     let barSegmentsHtml = "";
+    if (!item.roundDetails) item.roundDetails = {};
     
     for (let r = 1; r <= maxRound; r++) {
       const rScore = item.roundDetails[`R${r}`] || 0;
       if (rScore > 0 && item.totalScore > 0) {
         const percentInTeam = (rScore / item.totalScore) * 100;
         const colorClass = r === 1 ? 'r-color-1' : r === 2 ? 'r-color-2' : r === 3 ? 'r-color-3' : r === 4 ? 'r-color-4' : r === 5 ? 'r-color-5' : r === 6 ? 'r-color-6' : 'r-color-default';
-        
-        // 💡【高齢者向け最適化】バーの中に数字を入れず、色の帯の長さだけで比較できるように修正
         barSegmentsHtml += `<div class="bar-segment ${colorClass}" style="width: ${percentInTeam}%" title="R${r}: ${rScore}点"></div>`;
       }
     }
@@ -363,18 +374,18 @@
     const chartRow = document.createElement("div");
     chartRow.className = "chart-row";
     chartRow.innerHTML = `
-      <div class="chart-axis-label" style="font-size: 1.15rem; font-weight: 900; color: #000;">${item.teamName}</div>
+      <div class="chart-axis-label" style="font-size: 1.15rem; font-weight: 900; color: #000;">${item.teamName || '不明'}</div>
       <div class="chart-bar-area">
         <div class="stacked-bar-container" style="width: ${containerWidthPercent}%;">
           ${barSegmentsHtml || '<div style="color: #444444; font-size: 0.95rem; font-weight: 900; padding-left: 8px; line-height: 24px;">未投球</div>'}
         </div>
       </div>
-      <div class="chart-row-score">${item.totalScore}点</div>
+      <div class="chart-row-score">${item.totalScore || 0}点</div>
     `;
     chartContainer.appendChild(chartRow);
   });
 
-  // 💡【新設】全チームのグラフの下に、共通で参照できる「特大・極太の横軸目盛り」をドッキング！
+  // 全チームのグラフの下に目盛りを配置
   const scaleDiv = document.createElement("div");
   scaleDiv.className = "chart-scale-container";
   scaleDiv.innerHTML = `
@@ -404,7 +415,6 @@
     const card = document.createElement("div");
     card.className = "rank-card";
     
-    // 交代選手も網羅する個人履歴リストの作成
     let playerMapInTeam = {};
     let hasData = false;
 
@@ -438,7 +448,6 @@
       const pData = playerMapInTeam[pName];
       const formattedHistory = pData.scores.join(" / ");
       
-      // 💡【バグ修復完了】余計なクォーテーションを綺麗に削除しました
       originalHistoryHtml += `
         <div class="player-row-in-team" style="margin-bottom: 8px; padding: 4px 0; border-bottom: 1px dotted #ccc;">
           <div style="font-size: 1.2rem; font-weight: 900; color: #111; margin-bottom: 2px;">
@@ -459,7 +468,7 @@
       originalHistoryHtml = "<div style='padding:8px; font-weight:bold; color:#666;'>このチームの選手記録がまだ反映されていません。</div>";
     }
 
-    // 📲 チーム履歴確認用のコンパクトな一覧表（Table）の作成
+    // コンパクトな一覧表（Table）の作成
     let compactTableHtml = `
       <div class="sm-table-container" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 12px;">
         <div style="font-size: 1.1rem; font-weight: 900; color: #111; margin-bottom: 6px;">📊 チーム回戦別履歴確認表</div>
@@ -487,7 +496,7 @@
           const regex = /\(([^)]+)\)/g;
           let match;
           while ((match = regex.exec(rawString)) !== null) {
-            if (match[1]) {
+            if (match && match[1]) {
               scores.push(match[1].trim());
             }
           }
@@ -498,9 +507,9 @@
 
         compactTableHtml += `
           <tr>
-            <td class="col-bold" style="text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:70px;">${item.teamName}</td>
+            <td class="col-bold" style="text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:70px;">${item.teamName || '不明'}</td>
             <td>${r}</td>
-            <td class="col-score">${roundScore}点</td>
+            <td class="col-score">${roundScore}${typeof roundScore === 'number' ? '点' : ''}</td>
             <td class="col-nums" style="white-space: nowrap;">${scoreOnlyLine}</td>
           </tr>
         `;
@@ -513,30 +522,35 @@
       </div>
     `;
 
-    // 💡 チーム名表示部分を、CSSで新設した超見やすい黄色バッジ（.team-tag）で囲う形に最適化
+    // 💡【安全ガード】順位フォーマット関数の未定義対策
+    let rankClass = "rank-default";
+    let rankText = item.rank || "-";
+    try {
+      if (typeof getRankClass === "function") rankClass = getRankClass(item.rank);
+      if (typeof getRankFormat === "function") rankText = getRankFormat(item.rank);
+    } catch(e) {}
+
     card.innerHTML = `
       <div class="card-main-content">
-        <div class="rank-num ${getRankClass(item.rank)}">${getRankFormat(item.rank)}</div>
+        <div class="rank-num ${rankClass}">${rankText}</div>
         <div class="info-box">
           <div class="name-container">
-            <span class="team-tag">${item.teamName}</span>
+            <span class="team-tag">${item.teamName || '不明'}</span>
           </div>
         </div>
         <div class="score-box">
-          <span class="score-num">${item.totalScore}</span>
+          <span class="score-num">${item.totalScore || 0}</span>
           <span class="score-unit">点</span>
         </div>
       </div>
       
-      <!-- アコーディオンの折りたたみ隠しエリア -->
-      <div class="member-history-panel" id="panel-team-${item.teamNo || item.teamName}">
+      <div class="member-history-panel" id="panel-team-${item.teamNo || item.teamName || 'unknown'}">
         <div style="font-size: 1.1rem; font-weight: 900; color: #000; margin-bottom: 8px; border-left: 5px solid #008f00; padding-left: 8px;">👤 チーム内個人の総合成績</div>
         ${originalHistoryHtml}
         ${compactTableHtml}
       </div>
     `;
 
-    // タップした時にアコーディオンが開閉するイベントを設定
     card.addEventListener("click", () => {
       const panel = card.querySelector(".member-history-panel");
       if (panel) {
@@ -547,6 +561,7 @@
     listContainer.appendChild(card);
   });
 }
+
 
     /**
      * 個人別ランキングのレンダリング
