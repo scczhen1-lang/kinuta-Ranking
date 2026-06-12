@@ -444,18 +444,23 @@ function renderTeamRanking(rankings) {
 
     const containerWidthPercent = (item.totalScore / maxTeamScore) * 100;
 
+        // 💡 renderTeamRanking 関数内の、グラフ行を生成している部分を修正
     const chartRow = document.createElement("div");
     chartRow.className = "chart-row";
     chartRow.innerHTML = `
-      <div class="chart-axis-label" style="font-size: 1.15rem; font-weight: 900; color: #000;">${item.teamName || '不明'}</div>
+      <!-- 💡【変更】左端の表示を「チーム名」から、短くてハッキリ伝わる「No.〇〇」に変更 -->
+      <div class="chart-axis-label" style="font-size: 1.15rem; font-weight: 900; color: #000;">
+        No.${item.teamNo || item.teamName}
+      </div>
       <div class="chart-bar-area">
         <div class="stacked-bar-container" style="width: ${containerWidthPercent}%;">
-          ${barSegmentsHtml || '<div style="color: #444444; font-size: 0.95rem; font-weight: 900; padding-left: 8px; line-height: 24px;">未投球</div>'}
+          ${barSegmentsHtml || '<div style="color: #444444; font-size: 0.95rem; font-weight: 900; padding-left: 8px; line-height: 28px;">未投球</div>'}
         </div>
       </div>
       <div class="chart-row-score">${item.totalScore || 0}点</div>
     `;
     chartContainer.appendChild(chartRow);
+
   });
 
   
