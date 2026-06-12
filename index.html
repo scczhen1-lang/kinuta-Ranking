@@ -30,25 +30,43 @@
     .header-btn { display: inline-block; margin-top: 10px; background: rgba(255,255,255,0.25); border: 2px solid white; color: white; padding: 6px 18px; border-radius: 20px; font-size: 1rem; font-weight: 900; cursor: pointer; transition: background 0.2s; }
     .header-btn:active { background: rgba(255,255,255,0.45); }
 
-    /* タブ切り替えボタン */
-    .tabs { display: flex; background: white; margin: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: calc(100% - 30px); border: 1px solid #ccc; }
+    /* ==========================================
+       ① 左右の幅を画面いっぱいにする調整
+       ========================================== */
+    .tabs { 
+      display: flex; 
+      background: white; 
+      margin: 15px 0; /* 💡左右の余白（15px）を「0」にして画面いっぱいに */
+      border-radius: 0; /* 💡画面いっぱいにするため角丸をフラットに */
+      overflow: hidden; 
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1); 
+      width: 100%; /* 💡幅100%に固定 */
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
     .tab-btn { flex: 1; width: 50%; padding: 16px 10px; text-align: center; background: none; border: none; font-size: 1.25rem; font-weight: 900; color: #444; cursor: pointer; display: block; }
     .tab-btn.active { background-color: var(--primary-color) !important; color: white !important; }
     
-    .container { padding: 0 15px; }
+    .container { 
+      padding: 0; /* 💡コンテナ左右の余白（15px）を「0」にしてカードを画面いっぱいに */
+    }
     .content-panel { display: none; }
     .content-panel.active { display: block; }
     
-    /* 📋 カードデザイン */
- /* 🛠️ .rank-card の修正イメージ */
-    .rank-card {
-      background: var(--card-bg);
-      border-radius: 12px; /* 💡角丸を少し優しく広くする */
-      padding: 18px;
-      margin-bottom: 12px;
-      border: none; /* 💡ベタ塗りの枠線は思い切って消す！ */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 💡上品でクッキリ浮き出る影に変更 */
-     }
+    /* 各種カードの幅を画面いっぱいに広げる */
+    .rank-card { 
+      background: var(--card-bg); 
+      border-radius: 0; /* 💡画面いっぱいに広げるため外側の角丸（12px）を「0」にして洗練 */
+      padding: 18px 15px; 
+      margin-bottom: 10px; 
+      border: none; 
+      border-bottom: 1px solid #e5e7eb; /* 💡カード同士の区切り線をすっきり配置 */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
+      cursor: pointer; 
+      width: 100%;
+    }
 
     .card-main-content { display: flex; align-items: center; }
     
@@ -115,10 +133,34 @@
     .score-unit { font-size: 1rem; font-weight: bold; color: #333; margin-left: 1px; }
 
     /* 📊 グラフデザイン */
-    .chart-card { background: var(--card-bg); border-radius: 8px; padding: 18px; margin-bottom: 15px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+    .chart-card { 
+      background: var(--card-bg); 
+      border-radius: 0; /* 💡グラフカードも画面いっぱいに広げるため角丸を「0」に */
+      padding: 18px 15px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+      border: none;
+      border-bottom: 1px solid #e5e7eb;
+      width: 100%;
+    }
     .chart-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 14px; color: #111; border-left: 6px solid var(--primary-color); padding-left: 10px; }
-    .chart-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 1.05rem; }
-    .chart-axis-label { min-width: 90px; max-width: 90px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; text-align: right; color: #000; }
+    .chart-row { 
+      display: flex; 
+      align-items: center; 
+      margin-bottom: 12px; /* 💡行間を少しゆったりと */
+      font-size: 1.1rem; 
+    }
+    .chart-axis-label { 
+      min-width: 60px;  /* 💡チームNo.（例: "No.12"）に縮小するため、幅を90pxから「60px」へ狭めました */
+      max-width: 60px; 
+      font-weight: 900; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      padding-right: 8px; 
+      text-align: center; /* 💡中央揃えにしてスマートに */
+      color: #000; 
+    }
     .chart-bar-area { flex: 1; position: relative; }
 　　 /* 💥【新設】シニア向けグラフ横軸目盛り用のスタイル */
     .chart-scale-container {
@@ -151,21 +193,31 @@
 
       
     /* グラフのバーを太く見やすく */
-    /* 🛠️ .stacked-bar-container の修正イメージ */
-.stacked-bar-container { 
-  background: #dddddd; 
-  border-radius: 8px; /* 💡少し角を丸くする */
-  overflow: hidden; 
-  display: flex; 
-  height: 28px; 
-  width: 100%; 
-  border: 2px solid #555; /* 💡枠線を太くして視認性アップ */
-  /* 💡【隠し味】バーの上にガラスのようなツヤを出すグラデーション */
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
-}
-
-    .bar-segment { height: 100%; text-align: center; color: white; font-size: 0.85rem; font-weight: 900; line-height: 24px; transition: width 0.3s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
-    .chart-row-score { min-width: 55px; text-align: left; padding-left: 10px; font-weight: 900; font-size: 1.2rem; color: var(--primary-color); }
+    .stacked-bar-container { 
+      background: #dddddd; 
+      border-radius: 0; /* 💡【ご要望】横棒全体の丸みをなくしてシャープな角型に */
+      overflow: hidden; 
+      display: flex; 
+      height: 32px; /* 💡バーの高さを26pxから「32px」に高くして、さらにド迫力に */
+      width: 100%; 
+      border: 2px solid #333; 
+      background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
+    }
+    
+    .bar-segment { 
+      height: 100%; 
+      transition: width 0.3s; 
+      border-radius: 0; /* 💡【ご要望】内訳のカラー帯の丸みもすべて無くしてフラットに */
+    }
+    
+    .chart-row-score { 
+      min-width: 65px; /* 💡右側の合計点数エリアの幅 */
+      text-align: right; /* 💡右揃えにして数値を綺麗に整列 */
+      padding-left: 8px; 
+      font-weight: 900; 
+      font-size: 1.25rem; 
+      color: var(--primary-color); 
+    }
     
     /* グラフの色も濁りのないハッキリしたユニバーサル配色に調整 */
     .r-color-1 { background-color: #1e3a8a; } /* 濃い青 */
