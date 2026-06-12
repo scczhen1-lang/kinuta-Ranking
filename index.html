@@ -635,7 +635,17 @@ function renderTeamRanking(rankings) {
         const card = document.createElement("div");
         card.className = "rank-card";
         card.style.cursor = "default";
-            // 💡 個人順位のカード（rank-card）の中身を生成している部分を修正
+
+    // 💡【不具合①完全修正】個人順位では、所属がハッキリ分かる「チーム名」を確実に引き出す
+    const displayTeamName = item.teamName || (item.teamNo ? "チーム" + item.teamNo : '不明');
+
+    // 💡【不具合②対策】スラッシュ「 / 」の前後の余白を完全に消去して「/」に詰める処理
+    let cleanHistory = item.historyStr || '-';
+    if (typeof cleanHistory === "string") {
+      cleanHistory = cleanHistory.replace(/\s*\/\s*/g, "/"); // 前後のスペースを完全に排除
+    }
+
+    // 個人順位のカードの中身を生成
     card.innerHTML = `
       <div class="card-main-content">
         <!-- 🥇 順位（巨大メダル・これまで通り） -->
@@ -643,30 +653,31 @@ function renderTeamRanking(rankings) {
         
         <!-- 👤 中央の選手情報・履歴エリア -->
         <div class="info-box">
-          <!-- 1. 選手名 と チーム名バッジ（これまで通り） -->
+          <!-- 1. 選手名 と 💡フル表記のチーム名バッジ -->
           <div class="name-container">
-            <span class="name-main">${item.playerName}</span>
-            <span class="team-tag">No.${item.teamNo}</span>
+            <span class="name-main">${item.playerName || '不明'}</span>
+            <span class="team-tag">${displayTeamName}</span>
           </div>
           
-          <!-- 2. 💡【修正・上段】余った「履歴」と「試合数」の文字を上に配置 -->
+          <!-- 2. 💡【上段】余った「履歴」と「試合数」の文字を上に配置 -->
           <div style="font-size: 1.05rem; color: #444; font-weight: 900; margin-top: 4px; margin-bottom: 2px; line-height: 1;">
-            履歴 (${item.gameCount || item.roundDetails ? Object.keys(item.roundDetails).length : 0} 試合)
+            履歴 (${item.gameCount || (item.roundDetails ? Object.keys(item.roundDetails).length : 0)} 試合)
           </div>
           
-          <!-- 3. 💡【修正・下段】スラッシュ区切りの数字（スコア）だけを下に配置 -->
-          <div style="font-size: 1.3rem; color: #000; font-weight: 900; letter-spacing: 0.5px; line-height: 1.3;">
-            ${item.historyStr || '-'}
+          <!-- 3. 💡【下段】スペースを排除し、5試合分でも絶対にオーバーフローしない極限文字詰め -->
+          <div style="font-size: 1.25rem; color: #000; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; white-space: nowrap;">
+            ${cleanHistory}
           </div>
         </div>
         
         <!-- 🎯 右端の合計点数表示（極太大文字・これまで通り） -->
         <div class="score-box">
-          <span class="score-num">${item.totalScore}</span>
+          <span class="score-num">${item.totalScore || 0}</span>
           <span class="score-unit">点</span>
         </div>
       </div>
     `;
+
 
         panel.appendChild(card);
       });
