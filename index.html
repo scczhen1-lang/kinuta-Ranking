@@ -149,7 +149,7 @@
        ========================================== */
     .chart-row { 
       display: block; /* 💡横並び（flex）をやめ、縦に並ぶ（block）2段構成に変更 */
-      margin-bottom: 12px; /* 💡行と行の間を少しゆったり空けて見やすく */
+      margin-bottom: 6px; /* 💡行と行の間を少しゆったり空けて見やすく */
       width: 100%;
     }
     
@@ -159,10 +159,10 @@
       max-width: none !important; 
       min-width: 0 !important;
       font-weight: 900; 
-      font-size: 1.1rem; /* 💡極太ながら、バーを邪魔しないスマートなサイズに */
+      font-size: 1.05rem; /* 💡極太ながら、バーを邪魔しないスマートなサイズに */
       color: #000000; 
       text-align: left; /* 💡左揃えにして、ここからグラフが始まることを明示 */
-      margin-bottom: 4px; /* 💡下の横棒との隙間を少し空ける */
+      margin-bottom: 1px; /* 💡下の横棒との隙間を少し空ける */
       padding-left: 2px;
     }
     
@@ -174,8 +174,9 @@
     }
     
     .chart-bar-area {
-      flex: 1; /* 💡横棒が画面左端から右端の手前まで、最大限に長く伸びるようになります */
+      flex: 1; /* 💡横棒が画面左端から右端の手前まで最大限に伸びる */
       position: relative;
+      width: 0; /* 💥【超重要・オーバーフロー防止】これを入れることで、横棒が右端の点数を押し出さなくなり、改行（3段目への落下）を100%防ぎます */
     }
     
     /* 横棒全体のデザイン（角ばったフラット型） */
@@ -184,9 +185,9 @@
       border-radius: 0; 
       overflow: hidden; 
       display: flex; 
-      height: 24px; /* 💡太さはslimでド迫力を維持 */
+      height: 26px; /* 💡太さはslimでド迫力を維持 */
       width: 100%; 
-      border: 2px solid #333; 
+      border: 1px solid #333; 
       background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
     }
     
@@ -426,20 +427,24 @@ function renderTeamRanking(rankings) {
 
     const containerWidthPercent = (item.totalScore / maxTeamScore) * 100;
 
-        // 💡 renderTeamRanking 関数内の、グラフ行を生成している部分を修正
+    // 💡【チーム名解決】データ内のチーム名・Noのキーのブレを完全に吸収し、フルテキストで表示
+    const displayTeamName = item.teamName || (item.teamNo ? "チーム" + item.teamNo : '不明チーム');
+
     const chartRow = document.createElement("div");
     chartRow.className = "chart-row";
     chartRow.innerHTML = `
-      <!-- 💡【変更】左端の表示を「チーム名」から、短くてハッキリ伝わる「No.〇〇」に変更 -->
-      <div class="chart-axis-label" style="font-size: 1.15rem; font-weight: 900; color: #000;">
-        No.${item.teamNo || item.teamName}
-      </div>
-      <div class="chart-bar-area">
-        <div class="stacked-bar-container" style="width: ${containerWidthPercent}%;">
-          ${barSegmentsHtml || '<div style="color: #444444; font-size: 0.95rem; font-weight: 900; padding-left: 8px; line-height: 28px;">未投球</div>'}
+      <!-- 💡【1段目】真上にフルネームで表示されるチーム名 -->
+      <div class="chart-axis-label">${displayTeamName}</div>
+      
+      <!-- 💡【2段目】画面左端から右端までダイナミックに伸びる横棒 ＆ 右端に絶対固定される点数 -->
+      <div class="chart-bar-flex-group">
+        <div class="chart-bar-area">
+          <div class="stacked-bar-container" style="width: ${containerWidthPercent}%;">
+            ${barSegmentsHtml || '<div style="color: #444444; font-size: 0.95rem; font-weight: 900; padding-left: 8px; line-height: 28px;">未投球</div>'}
+          </div>
         </div>
+        <div class="chart-row-score">${item.totalScore || 0}点</div>
       </div>
-      <div class="chart-row-score">${item.totalScore || 0}点</div>
     `;
     chartContainer.appendChild(chartRow);
 
