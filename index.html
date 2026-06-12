@@ -144,80 +144,62 @@
       width: 100%;
     }
     .chart-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 14px; color: #111; border-left: 6px solid var(--primary-color); padding-left: 10px; }
+        /* ==========================================
+       📊 グラフエリアの「2段レイアウト」専用調整
+       ========================================== */
     .chart-row { 
-      display: flex; 
-      align-items: center; 
-      margin-bottom: 12px; /* 💡行間を少しゆったりと */
-      font-size: 1.1rem; 
+      display: block; /* 💡横並び（flex）をやめ、縦に並ぶ（block）2段構成に変更 */
+      margin-bottom: 12px; /* 💡行と行の間を少しゆったり空けて見やすく */
+      width: 100%;
     }
+    
+    /* 1段目：チーム名（グラフの真上に配置） */
     .chart-axis-label { 
-      min-width: 60px;  /* 💡チームNo.（例: "No.12"）に縮小するため、幅を90pxから「60px」へ狭めました */
-      max-width: 60px; 
+      width: 100% !important; /* 💡幅いっぱいに広げる */
+      max-width: none !important; 
+      min-width: 0 !important;
       font-weight: 900; 
-      white-space: nowrap; 
-      overflow: hidden; 
-      text-overflow: ellipsis; 
-      padding-right: 8px; 
-      text-align: center; /* 💡中央揃えにしてスマートに */
-      color: #000; 
+      font-size: 1.1rem; /* 💡極太ながら、バーを邪魔しないスマートなサイズに */
+      color: #000000; 
+      text-align: left; /* 💡左揃えにして、ここからグラフが始まることを明示 */
+      margin-bottom: 4px; /* 💡下の横棒との隙間を少し空ける */
+      padding-left: 2px;
     }
-    .chart-bar-area { flex: 1; position: relative; }
-　　 /* 💥【新設】シニア向けグラフ横軸目盛り用のスタイル */
-    .chart-scale-container {
+    
+    /* 2段目：横棒と合計点数の横並びエリア */
+    .chart-bar-flex-group {
       display: flex;
-      margin-top: 12px;
-      margin-bottom: 5px;
-      padding-left: 90px; /* 💡チーム名の幅（90px）と完全に一致させて位置をピッタリ揃える */
-      width: calc(100% - 55px); /* 💡右側の合計点数エリア（55px）の手前までを幅とする */
+      align-items: center;
+      width: 100%;
     }
-    .scale-axis {
-      flex: 1;
+    
+    .chart-bar-area {
+      flex: 1; /* 💡横棒が画面左端から右端の手前まで、最大限に長く伸びるようになります */
       position: relative;
-      height: 25px; /* 目盛りの高さ */
     }
-    .scale-tick {
-      position: absolute;
-      bottom: 12px; /* バーのすぐ下に線を配置 */
-      width: 2px;
-      height: 10px; /* 目盛り線の長さ */
-      background-color: #111111; /* 💡真っ黒で太い目盛り線 */
-    }
-    .scale-label {
-      position: absolute;
-      bottom: -15px; /* 数字の位置 */
-      transform: translateX(-50%); /* 数字の中央を目盛り線に合わせる */
-      font-size: 1.1rem; /* 💡高齢者に見やすい大きな数字 */
-      font-weight: 900;  /* 💡極太文字 */
-      color: #000000;
-    }
-
-      
-    /* グラフのバーを太く見やすく */
+    
+    /* 横棒全体のデザイン（角ばったフラット型） */
     .stacked-bar-container { 
       background: #dddddd; 
-      border-radius: 0; /* 💡【ご要望】横棒全体の丸みをなくしてシャープな角型に */
+      border-radius: 0; 
       overflow: hidden; 
       display: flex; 
-      height: 32px; /* 💡バーの高さを26pxから「32px」に高くして、さらにド迫力に */
+      height: 24px; /* 💡太さはslimでド迫力を維持 */
       width: 100%; 
       border: 2px solid #333; 
       background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
     }
     
-    .bar-segment { 
-      height: 100%; 
-      transition: width 0.3s; 
-      border-radius: 0; /* 💡【ご要望】内訳のカラー帯の丸みもすべて無くしてフラットに */
-    }
-    
+    /* 右端：合計点数表示 */
     .chart-row-score { 
-      min-width: 65px; /* 💡右側の合計点数エリアの幅 */
-      text-align: right; /* 💡右揃えにして数値を綺麗に整列 */
-      padding-left: 8px; 
+      min-width: 70px; /* 💡点数が見切れないように少し幅を確保 */
+      text-align: right; 
+      padding-left: 10px; 
       font-weight: 900; 
-      font-size: 1.25rem; 
+      font-size: 1.3rem; /* 💡点数をパッと見やすく少し大きく */
       color: var(--primary-color); 
     }
+
     
     /* グラフの色も濁りのないハッキリしたユニバーサル配色に調整 */
     .r-color-1 { background-color: #1e3a8a; } /* 濃い青 */
