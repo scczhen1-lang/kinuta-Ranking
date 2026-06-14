@@ -149,7 +149,7 @@
        ========================================== */
     .chart-row { 
       display: block; /* 💡横並び（flex）をやめ、縦に並ぶ（block）2段構成に変更 */
-      margin-bottom: 6px; /* 💡行と行の間を少しつめて見やすく */
+      margin-bottom: 4px; /* 💡行と行の間を少しつめて見やすく */
       width: 100%;
     }
     
@@ -172,7 +172,7 @@
       display: flex;
       align-items: center;
       width: 100%;
-      height: 32px; /* 💡横棒エリアの高さを固定して、縦に広がるのを防止 */
+      height: 30px; /* 💡横棒エリアの高さを固定して、縦に広がるのを防止 */
     }
     
     .chart-bar-area {
@@ -187,9 +187,9 @@
       border-radius: 0; 
       overflow: hidden; 
       display: flex; 
-      height: 26px; /* 💡太さはslimでド迫力を維持 */
+      height: 24px; /* 💡太さはslimでド迫力を維持 */
       width: 100%; 
-      border: 1px solid #333; 
+      border: 0px solid #333; 
       background-image: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%);
     }
     
@@ -201,14 +201,14 @@
       font-weight: 900; 
       font-size: 1.3rem; /* 💡点数をパッと見やすく少し大きく */
       color: var(--primary-color);
-      line-height: 32px; /* 💡横棒の高さとピッタリ高さを合わせて中央揃え */ 
+      line-height: 30px; /* 💡横棒の高さとピッタリ高さを合わせて中央揃え */ 
     }
 
     
     /* グラフの色も濁りのないハッキリしたユニバーサル配色に調整 */
-    .r-color-1 { background-color: #1e3a8a; } /* 濃い青 */
-    .r-color-2 { background-color: #047857; } /* 濃い緑 */
-    .r-color-3 { background-color: #d97706; } /* 濃いオレンジ */
+    .r-color-1 { background-color: #00BFFF; } /* DeepSkyBlue */
+    .r-color-2 { background-color: #d97706; } /* 濃いオレンジ */
+    .r-color-3 { background-color: #047857; } /* 濃い緑 */
     .r-color-4 { background-color: #dc2626; } /* 濃い赤 */
     .r-color-5 { background-color: #6d28d9; } /* 濃い紫 */
     .r-color-6 { background-color: #be185d; } /* 濃いピンク */
