@@ -374,7 +374,11 @@ async function fetchRankingData() {
 
   cachedData =
   result.data;
-
+　
+　// 正規化（どちらのキーでも受け取れるようにして内部では teamRankings/teamRankings を使う）
+　cachedData.teamRankings = result.data.teamRankings || result.data.teamRanking || [];
+　cachedData.playerRankings = result.data.playerRankings || result.data.playerRanking || [];
+   
   if(
    result.data
    &&
@@ -438,28 +442,11 @@ function renderData(data){
 
  }
 
- if(currentTab==="team"){
-
-  renderTeamRanking(
-   data.teamRanking
-   ||
-   data.teamRankings
-   ||
-   []
-  );
-
- }else{
-
-  renderPlayerRanking(
-   data.playerRanking
-   ||
-   data.playerRankings
-   ||
-   []
-  );
-
- }
-
+if (currentTab === "team") {
+  renderTeamRanking(data.teamRankings || []);
+} else {
+  renderPlayerRanking(data.playerRankings || []);
+}
 }
     
     /**
