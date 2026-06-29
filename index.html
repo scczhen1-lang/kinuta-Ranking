@@ -753,7 +753,15 @@ function renderTeamRanking(rankings) {
     /**
      * アプリケーションの初期化
      */
-    async function initApp() {
+    async function initApp(){
+
+ alert(
+  "init開始"
+ );
+
+ return;
+
+
       document.getElementById("tab-team").addEventListener("click", () => switchTab("team"));
       document.getElementById("tab-player").addEventListener("click", () => switchTab("player"));
       document.getElementById("btn-refresh").addEventListener("click", fetchRankingData);
