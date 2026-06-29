@@ -344,134 +344,40 @@
     /**
      * GASのdoGetから最新データを爆速取得
      */
-async function fetchRankingData() {
+    async function fetchRankingData() {
+      showLoading(true);
+      try {
+        const response = await fetch(`${GAS_API_URL}?ts=${Date.now()}`);
+        if (!response.ok) throw new Error("データの取得に失敗しました。");
+        
+        const data = await response.json();
+        cachedData = data;
 
- showLoading(true);
+        if (data.tournamentName) {
+          document.getElementById("tournament-name").innerText = data.tournamentName;
+        }
 
- try {
+        renderData(data);
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        alert("データ同期エラー: 最新の成績を取得できませんでした。\nGASのデプロイURLが正しいか確認してください。");
+      } finally {
+        showLoading(false);
+      }
+    }
 
-  const response =
-  await fetch(
-   `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
-  );
-
-  if(
-   !response.ok
-  ){
-
-   throw new Error(
-    "取得失敗"
-   );
-
-  }
-
-  const result =
-  await response.json();
-
-  console.log(
-   result
-  );
-
-  cachedData =
-  result.data;
-　
-　// cachedData = result.data; の直後に追加する正規化処理
-if (cachedData) {
-  // teamRankings を確実に用意する（単数/複数形どちらでも対応）
-  cachedData.teamRankings = cachedData.teamRankings || cachedData.teamRanking || [];
-  cachedData.teamRankings = cachedData.teamRankings.map((t, idx) => ({
-    teamNo: t.teamNo || t.team || null,
-    teamName: t.teamName || (t.teamNo ? "チーム" + t.teamNo : (t.team || "不明")),
-    totalScore: (t.total !== undefined) ? t.total : (t.totalScore || 0),
-    count: t.count || 0,
-    rank: t.rank || (idx + 1),
-    roundDetails: t.roundDetails || {},
-    memberHistory: t.memberHistory || {}
-  }));
-
-  // playerRankings を確実に用意する（単数/複数形どちらでも対応）
-  cachedData.playerRankings = cachedData.playerRankings || cachedData.playerRanking || [];
-  cachedData.playerRankings = cachedData.playerRankings.map((p, idx) => ({
-    playerName: p.player || p.playerName || p.name || "不明",
-    teamName: p.teamName || (p.teamNo ? "チーム" + p.teamNo : (p.team || "")),
-    totalScore: (p.total !== undefined) ? p.total : (p.totalScore || 0),
-    rank: p.rank || (idx + 1),
-    historyStr: p.historyStr || "",
-    roundDetails: p.roundDetails || {},
-    gameCount: p.gameCount || (p.roundDetails ? Object.keys(p.roundDetails).length : 0)
-  }));
-}
-   
-  if(
-   result.data
-   &&
-   result.data
-   .tournamentName
-  ){
-
-   document
-   .getElementById(
-    "tournament-name"
-   )
-   .innerText =
-
-   result.data
-   .tournamentName;
-
-  }
-
-  renderData(
-   result.data
-  );
-
- }
- catch(e){
-
-  console.error(
-   e
-  );
-
- }
- finally{
-
-  showLoading(
-   false
-  );
-
- }
-
-}
     function showLoading(show) {
       const loader = document.getElementById("loader");
       if (loader) loader.style.display = show ? "block" : "none";
     }
 
-function renderData(data){
-
- console.log(
-  "renderData",
-  data
- );
-
- if(
-  !data
- ){
-
-  console.error(
-   "dataなし"
-  );
-
-  return;
-
- }
-
-if (currentTab === "team") {
-  renderTeamRanking(data.teamRankings || []);
-} else {
-  renderPlayerRanking(data.playerRankings || []);
-}
-}
-    
+    function renderData(data) {
+      if (currentTab === "team") {
+        renderTeamRanking(data.teamRankings || []);
+      } else {
+        renderPlayerRanking(data.playerRankings || []);
+      }
+    }
     /**
      * チーム別ランキング ＆ 独立全体比較グラフのレンダリング
      */
