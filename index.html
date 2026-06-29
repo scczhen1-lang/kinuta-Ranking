@@ -387,19 +387,27 @@ renderData(
  cachedData
 );
   }
-  catch(e){
+catch(e){
 
-    console.error(
-      "fetch error",
-      e
-    );
+ console.error(
+  "ERROR",
+  e
+ );
 
-  }
-  finally{
+ alert(
+  e.toString()
+ );
 
-    showLoading(false);
+}
+finally{
 
-  }
+ console.log(
+  "終了"
+ );
+
+ showLoading(
+  false
+ );
 
 }
     function showLoading(show) {
