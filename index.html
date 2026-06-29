@@ -367,6 +367,12 @@ async function fetchRankingData() {
     // ★ dataラッパー有無両対応
     cachedData =
       result.data || result;
+    console.log("result=", result);
+
+console.log(
+ "cachedData=",
+ cachedData
+);
 
     document
       .getElementById(
