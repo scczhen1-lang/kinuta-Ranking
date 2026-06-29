@@ -346,68 +346,53 @@
      */
 async function fetchRankingData() {
 
-  showLoading(true);
+ showLoading(true);
 
-  try {
+ try {
 
-    const response =
-      await fetch(
-        `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
-      );
+  console.log("開始");
 
-    if (!response.ok) {
-      throw new Error("取得失敗");
-    }
+  const response =
+   await fetch(
+    `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
+   );
 
-const result =
- await response.json();
+  console.log("response",response);
 
-console.log(
- "① result",
- result
-);
+  const result =
+   await response.json();
 
-    // ★ dataラッパー有無両対応
- cachedData =
- result.data;
+  console.log("JSON",result);
 
-console.log(
- "② cachedData",
- cachedData
-);
+  cachedData =
+   result.data || result;
 
-    document
-      .getElementById(
-        "tournament-name"
-      )
-      .innerText =
-      cachedData.tournamentName || "輪投げ大会";
+  console.log("cachedData",cachedData);
 
-renderData(
- cachedData
-);
-  }
-catch(e){
+  // ← 一旦描画停止
+  // renderData(cachedData);
 
- console.error(
-  "ERROR",
-  e
- );
+  alert(
+   "JSON取得成功"
+  );
 
- alert(
-  e.toString()
- );
+ }
+ catch(e){
 
-}
-finally{
+  console.error(e);
 
- console.log(
-  "終了"
- );
+  alert(
+   e.toString()
+  );
 
- showLoading(
-  false
- );
+ }
+ finally{
+
+  console.log("終了");
+
+  showLoading(false);
+
+ }
 
 }
     function showLoading(show) {
