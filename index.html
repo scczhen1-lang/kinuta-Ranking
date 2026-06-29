@@ -353,8 +353,8 @@
         const data = await response.json();
         cachedData = data.data;
 
-        if (data.tournamentName) {
-          document.getElementById("tournament-name").innerText = data.tournamentName;
+        if (data.data && data.data.tournamentName) {
+          document.getElementById("tournament-name").innerText = data.data.tournamentName;
         }
 
         renderData(data.data);
