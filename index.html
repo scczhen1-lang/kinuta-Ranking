@@ -359,18 +359,20 @@ async function fetchRankingData() {
       throw new Error("取得失敗");
     }
 
-    const result =
-      await response.json();
-
-    console.log("取得JSON", result);
-
-    // ★ dataラッパー有無両対応
-    cachedData =
-      result.data || result;
-    console.log("result=", result);
+const result =
+ await response.json();
 
 console.log(
- "cachedData=",
+ "① result",
+ result
+);
+
+    // ★ dataラッパー有無両対応
+ cachedData =
+ result.data;
+
+console.log(
+ "② cachedData",
  cachedData
 );
 
@@ -381,10 +383,9 @@ console.log(
       .innerText =
       cachedData.tournamentName || "輪投げ大会";
 
-    renderData(
-      cachedData
-    );
-
+renderData(
+ cachedData
+);
   }
   catch(e){
 
@@ -406,18 +407,38 @@ console.log(
       if (loader) loader.style.display = show ? "block" : "none";
     }
 
-    function renderData(data) {
-      console.log(
-      "renderData:",
-      data
-      );
-      if (currentTab === "team") {
-        renderTeamRanking(data.teamRankings || []);
-      } else {
-        renderPlayerRanking(data.playerRankings || []);
-      }
-    }
-    /**
+function renderData(data){
+
+ console.log(
+  "③ renderData",
+  data
+ );
+
+ console.log(
+  "④ teamRanking",
+  data?.teamRanking
+ );
+
+ console.log(
+  "⑤ playerRanking",
+  data?.playerRanking
+ );
+
+ if(currentTab==="team"){
+
+  renderTeamRanking(
+   data?.teamRanking||[]
+  );
+
+ }else{
+
+  renderPlayerRanking(
+   data?.playerRanking||[]
+  );
+
+ }
+
+}
      * チーム別ランキング ＆ 独立全体比較グラフのレンダリング
      */
 function renderTeamRanking(rankings) {
