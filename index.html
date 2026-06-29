@@ -346,72 +346,53 @@
      */
 async function fetchRankingData() {
 
- showLoading(true);
+  showLoading(true);
 
- try {
+  try {
 
-  const response =
-  await fetch(
-   `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
-  );
+    const response =
+      await fetch(
+        `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
+      );
 
-  if(
-   !response.ok
-  ){
+    if (!response.ok) {
+      throw new Error("取得失敗");
+    }
 
-   throw new Error(
-    "取得失敗"
-   );
+    const result =
+      await response.json();
 
-  }
+    console.log("取得JSON", result);
 
-  const result =
-  await response.json();
+    // ★ dataラッパー有無両対応
+    cachedData =
+      result.data || result;
 
-  console.log(
-   result
-  );
+    document
+      .getElementById(
+        "tournament-name"
+      )
+      .innerText =
+      cachedData.tournamentName || "輪投げ大会";
 
-  cachedData =
-  result.data;
-
-  if(
-   result.data
-   &&
-   result.data
-   .tournamentName
-  ){
-
-   document
-   .getElementById(
-    "tournament-name"
-   )
-   .innerText =
-
-   result.data
-   .tournamentName;
+    renderData(
+      cachedData
+    );
 
   }
+  catch(e){
 
-  renderData(
-   result.data
-  );
+    console.error(
+      "fetch error",
+      e
+    );
 
- }
- catch(e){
+  }
+  finally{
 
-  console.error(
-   e
-  );
+    showLoading(false);
 
- }
- finally{
-
-  showLoading(
-   false
-  );
-
- }
+  }
 
 }
     function showLoading(show) {
