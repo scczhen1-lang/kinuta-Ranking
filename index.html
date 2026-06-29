@@ -419,16 +419,49 @@ async function fetchRankingData() {
       if (loader) loader.style.display = show ? "block" : "none";
     }
 
-    function renderData(data) {
-      console.log(
-      data
-      );
-      if (currentTab === "team") {
-        renderTeamRanking(data.teamRankings || []);
-      } else {
-        renderPlayerRanking(data.playerRankings || []);
-      }
-    }
+function renderData(data){
+
+ console.log(
+  "renderData",
+  data
+ );
+
+ if(
+  !data
+ ){
+
+  console.error(
+   "dataなし"
+  );
+
+  return;
+
+ }
+
+ if(currentTab==="team"){
+
+  renderTeamRanking(
+   data.teamRanking
+   ||
+   data.teamRankings
+   ||
+   []
+  );
+
+ }else{
+
+  renderPlayerRanking(
+   data.playerRanking
+   ||
+   data.playerRankings
+   ||
+   []
+  );
+
+ }
+
+}
+    
     /**
      * チーム別ランキング ＆ 独立全体比較グラフのレンダリング
      */
