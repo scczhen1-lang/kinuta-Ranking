@@ -304,15 +304,13 @@
     <div id="player-panel" class="content-panel"></div>
   </div>
 
-<!--
-<script src="https://line-scdn.net"></script>
--->
+  <script src="https://line-scdn.net"></script>
   <script>
     // ==========================================
     // 設定値の同期
     // ==========================================
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyC9_0zj1wTE-dUG8f8ou1sO0fI2Y1TM8x-op2TX1M__p-cJfk9XEXWCSp2z1jtTizi/exec"; 
-    const LIFF_ID = "2010079085-BKD9BHDT"; 
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycby*************/exec"; 
+    const LIFF_ID = "********-BKD9BHDT"; 
 
     let currentTab = "team";
     let cachedData = null;
@@ -352,92 +350,86 @@ async function fetchRankingData() {
 
  try {
 
-  console.log("開始");
-
   const response =
-   await fetch(
-    `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
+  await fetch(
+   `${GAS_API_URL}?mode=ranking&ts=${Date.now()}`
+  );
+
+  if(
+   !response.ok
+  ){
+
+   throw new Error(
+    "取得失敗"
    );
 
-  console.log("response",response);
+  }
 
   const result =
-   await response.json();
+  await response.json();
 
-  console.log("JSON",result);
+  console.log(
+   result
+  );
 
   cachedData =
-   result.data || result;
+  result.data;
 
-  console.log("cachedData",cachedData);
+  if(
+   result.data
+   &&
+   result.data
+   .tournamentName
+  ){
 
-  // ← 一旦描画停止
-  // renderData(cachedData);
+   document
+   .getElementById(
+    "tournament-name"
+   )
+   .innerText =
 
-  alert(
-   "JSON取得成功"
+   result.data
+   .tournamentName;
+
+  }
+
+  renderData(
+   result.data
   );
 
  }
  catch(e){
 
-  console.error(e);
-
-  alert(
-   e.toString()
+  console.error(
+   e
   );
 
  }
  finally{
 
-  console.log("終了");
-
-  showLoading(false);
-
- }
-
-}
-function showLoading(show){
-
- console.log(
-  "loader",
-  show
- );
-
-}
-
-function renderData(data){
-
- console.log(
-  "③ renderData",
-  data
- );
-
- console.log(
-  "④ teamRanking",
-  data?.teamRanking
- );
-
- console.log(
-  "⑤ playerRanking",
-  data?.playerRanking
- );
-
- if(currentTab==="team"){
-
-  renderTeamRanking(
-   data?.teamRanking||[]
-  );
-
- }else{
-
-  renderPlayerRanking(
-   data?.playerRanking||[]
+  showLoading(
+   false
   );
 
  }
 
 }
+    function showLoading(show) {
+      const loader = document.getElementById("loader");
+      if (loader) loader.style.display = show ? "block" : "none";
+    }
+
+    function renderData(data) {
+      console.log(
+      data
+      );
+      if (currentTab === "team") {
+        renderTeamRanking(data.teamRankings || []);
+      } else {
+        renderPlayerRanking(data.playerRankings || []);
+      }
+    }
+    /**
      * チーム別ランキング ＆ 独立全体比較グラフのレンダリング
      */
 function renderTeamRanking(rankings) {
@@ -755,13 +747,25 @@ function renderTeamRanking(rankings) {
     /**
      * アプリケーションの初期化
      */
-async function initApp(){
+    async function initApp() {
+      document.getElementById("tab-team").addEventListener("click", () => switchTab("team"));
+      document.getElementById("tab-player").addEventListener("click", () => switchTab("player"));
+      document.getElementById("btn-refresh").addEventListener("click", fetchRankingData);
 
- alert(
-  "起動成功"
- );
-
-}
+      if (typeof liff !== 'undefined') {
+        try {
+          await liff.init({ liffId: LIFF_ID });
+          if (!liff.isLoggedIn() && liff.isInClient()) {
+            liff.login();
+            return;
+          }
+        } catch (error) {
+          console.warn("LIFF初期化スキップ（通常ブラウザ動作中）:", error);
+        }
+      }
+      
+      fetchRankingData();
+    }
 
     document.addEventListener("DOMContentLoaded", initApp);
   </script>
