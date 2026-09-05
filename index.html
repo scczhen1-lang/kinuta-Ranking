@@ -1,164 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>輪投げ大会 最終成績</title>
- <style>
- :root { 
- --primary-color: #008f00; 
- --secondary-color: #111111; 
- --bg-color: #eef2f7; 
- --card-bg: #ffffff; 
- }
- * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; }
- body { background-color: var(--bg-color); color: var(--secondary-color); padding-bottom: 40px; font-size: 1.15rem; line-height: 1.5; }
- header { background: linear-gradient(135deg, var(--primary-color), #007700); color: white; padding: 18px 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
- h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0px; }
- .tabs { display: flex; background: white; margin: 15px 0; border-radius: 0; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: 100%; border: none; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; }
- .tab-btn { flex: 1; width: 50%; padding: 16px 10px; text-align: center; background: none; border: none; font-size: 1.25rem; font-weight: 900; color: #444; cursor: pointer; display: block;}
- .tab-btn.active { background-color: var(--primary-color) !important; color: white !important;}
- .container { padding: 0; }
- .content-panel { display: none; }
- .content-panel.active { display: block; }
- .rank-card { background: var(--card-bg); border-radius: 0; padding: 18px 15px; margin-bottom: 10px; border: none; border-bottom: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); width: 100%; }
- .card-main-content { display: flex; align-items: center; }
- .rank-num { font-size: 1.6rem; font-weight: 900; min-width: 55px; max-width: 55px; height: 55px; line-height: 51px; text-align: center; margin-right: 15px; color: #333; background: #e6e6e6; border-radius: 50%; border: 2px solid #ccc; }
- .rank-1 { background: linear-gradient(135deg, #ffd700, #ffa500); color: #000000; font-size: 2.1rem; border: 3px solid #b58600; box-shadow: inset 0 2px 4px rgba(255,255,255,0.4); }
- .rank-2 { background: linear-gradient(135deg, #f0f0f0, #b0b0b0); color: #000000; border: 3px solid #777;}
- .rank-3 { background: linear-gradient(135deg, #f4a460, #cd7f32); color: #000000; border: 3px solid #8b4513;}
- .info-box { flex: 1; }
- .name-main { font-size: 1.4rem; font-weight: 900; color: #000000; line-height: 1.4; }
- .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
- .team-tag { font-size: 1.05rem; color: #000000 !important; background-color: #ffe082 !important; padding: 4px 14px; border-radius: 20px; font-weight: 900 !important; border: 2px solid #000000; }
- .score-box { text-align: right; min-width: 85px; }
- .score-num { font-size: 1.8rem; font-weight: 900; color: var(--primary-color); } 
- .score-unit { font-size: 1rem; font-weight: bold; color: #333; margin-left: 1px; }
- .chart-card { background: var(--card-bg); border-radius: 0; padding: 18px 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: none; border-bottom: 1px solid #e5e7eb; width: 100%; }
- .chart-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 14px; color: #111; border-left: 6px solid var(--primary-color); padding-left: 10px; }
- .chart-row { display: block; margin-bottom: 12px; width: 100%; }
- .chart-axis-label { width: 100%; font-weight: 900; font-size: 1.0rem; color: #000000; text-align: left; margin-bottom: 2px; }
- .chart-bar-flex-group { display: flex; align-items: center; width: 100%; height: 30px; }
- .chart-bar-area { flex: 1; position: relative; }
- .stacked-bar-container { background: #dddddd; border-radius: 4px; overflow: hidden; display: flex; height: 24px; }
- .bar-segment { height: 100%; }
- .chart-row-score { min-width: 70px; text-align: right; padding-left: 6px; font-weight: 900; font-size: 1.3rem; color: var(--primary-color); }
- .r-color-1 { background-color: #00BFFF; } 
- .r-color-2 { background-color: #FF3AD8; } 
- .r-color-3 { background-color: #29FF14; } 
- .r-color-4 { background-color: #FF1437; } 
- .r-color-5 { background-color: #A632FF; } 
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輪投げ大会 成績一覧</title>
+    <!-- 既存のアイコン設定をそのまま残す（スマホのホーム画面用） -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" href="icon.png">
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f7f7f7; }
+        h1 { color: #333; margin-bottom: 30px; }
+        .menu-box { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn { display: block; padding: 15px; margin: 15px 0; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 1.1rem; }
+        .btn:hover { background-color: #0056b3; }
+        .btn.past { background-color: #6c757d; } /* 過去の大会は少し落ち着いた色に */
+        .btn.past:hover { background-color: #5a6268; }
+    </style>
 </head>
 <body>
- <header>
-    <h1>第11回 砧高協輪投げ大会</h1>
-   <div class="sub-header-text">開催日: 2026年7月12日 (最終結果)</div>
- </header>
- <div class="tabs">
-   <button class="tab-btn active" onclick="switchTab('team')">チーム順位</button>
-   <button class="tab-btn" onclick="switchTab('player')">個人順位(上位25位)</button>
- </div>
- <div class="container">
-   <!-- チーム順位パネル -->
-   <div id="team-panel" class="content-panel active">
-     <div class="chart-card">
-       <div class="chart-title">チーム総得点 最終結果</div>
-       <div class="chart-row">
-         <div class="chart-axis-label">1位：千歳会A (85/62/87/151/104 合計489点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:100%;"><div class="bar-segment r-color-1" style="width:17.4%"></div><div class="bar-segment r-color-2" style="width:12.7%"></div><div class="bar-segment r-color-3" style="width:17.8%"></div><div class="bar-segment r-color-4" style="width:30.9%"></div><div class="bar-segment r-color-5" style="width:21.2%"></div></div></div><div class="chart-row-score">489点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">2位：みずき会A (95/108/ 60/86/104 合計453点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:92.6%;"><div class="bar-segment r-color-1" style="width:21%"></div><div class="bar-segment r-color-2" style="width:23.8%"></div><div class="bar-segment r-color-3" style="width:13.2%"></div><div class="bar-segment r-color-4" style="width:19%"></div><div class="bar-segment r-color-5" style="width:23%"></div></div></div><div class="chart-row-score">453点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">3位：千歳会B (75/67/95/66/64 合計367点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:75%;"><div class="bar-segment r-color-1" style="width:20.4%"></div><div class="bar-segment r-color-2" style="width:18.3%"></div><div class="bar-segment r-color-3" style="width:25.9%"></div><div class="bar-segment r-color-4" style="width:18%"></div><div class="bar-segment r-color-5" style="width:17.4%"></div></div></div><div class="chart-row-score">367点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">4位：光寿会 (68/39/36/67/62 合計272点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:55.6%;"><div class="bar-segment r-color-1" style="width:25%"></div><div class="bar-segment r-color-2" style="width:14.3%"></div><div class="bar-segment r-color-3" style="width:13.2%"></div><div class="bar-segment r-color-4" style="width:24.6%"></div><div class="bar-segment r-color-5" style="width:22.8%"></div></div></div><div class="chart-row-score">272点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">5位：千歳廻寿会 (58/42/71/39/55 合計265点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:54.2%;"><div class="bar-segment r-color-1" style="width:21.9%"></div><div class="bar-segment r-color-2" style="width:15.8%"></div><div class="bar-segment r-color-3" style="width:26.8%"></div><div class="bar-segment r-color-4" style="width:14.7%"></div><div class="bar-segment r-color-5" style="width:20.8%"></div></div></div><div class="chart-row-score">265点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">6位：上北沢幸友会 (43/57/59/51/38 合計248点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:50.7%;"><div class="bar-segment r-color-1" style="width:17.3%"></div><div class="bar-segment r-color-2" style="width:23%"></div><div class="bar-segment r-color-3" style="width:23.8%"></div><div class="bar-segment r-color-4" style="width:20.6%"></div><div class="bar-segment r-color-5" style="width:15.3%"></div></div></div><div class="chart-row-score">248点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">7位：成城若葉会 (48/71/62/41/21 合計243点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:49.7%;"><div class="bar-segment r-color-1" style="width:19.8%"></div><div class="bar-segment r-color-2" style="width:29.2%"></div><div class="bar-segment r-color-3" style="width:25.5%"></div><div class="bar-segment r-color-4" style="width:16.9%"></div><div class="bar-segment r-color-5" style="width:8.6%"></div></div></div><div class="chart-row-score">243点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">8位：日の丸会 (59/54/46/13/43 合計215点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:44%;"><div class="bar-segment r-color-1" style="width:27.4%"></div><div class="bar-segment r-color-2" style="width:25.1%"></div><div class="bar-segment r-color-3" style="width:21.4%"></div><div class="bar-segment r-color-4" style="width:6%"></div><div class="bar-segment r-color-5" style="width:20.1%"></div></div></div><div class="chart-row-score">215点</div></div>
-       </div>
-       <div class="chart-row">
-         <div class="chart-axis-label">9位：七福会 (24/47/53/25/54 合計203点)</div>
-         <div class="chart-bar-flex-group"><div class="chart-bar-area"><div class="stacked-bar-container" style="width:41.5%;"><div class="bar-segment r-color-1" style="width:11.8%"></div><div class="bar-segment r-color-2" style="width:23.2%"></div><div class="bar-segment r-color-3" style="width:26.1%"></div><div class="bar-segment r-color-4" style="width:12.3%"></div><div class="bar-segment r-color-5" style="width:26.6%"></div></div></div><div class="chart-row-score">203点</div></div>
-       </div>
-     </div><div class="chart-card" style="text-align: center;">
-       <div class="chart-title" style="text-align: left;">成績集計表</div>
-       <img src="table.png" alt="成績集計表" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; border-radius: 4px; margin-top: 5px;">
-     </div>
-   </div>
-      <!-- 個人順位パネル -->
-   <div id="player-panel" class="content-panel">
-     <script>
-       const playerPanelHtml = `
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num rank-1">🥇</div><div class="info-box"><div class="name-container"><span class="name-main">7-第4投者</span><span class="team-tag">みずき会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 17 / 32 / 27 / 21 / 29 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">126</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num rank-2">🥈</div><div class="info-box"><div class="name-container"><span class="name-main">3-第1投者</span><span class="team-tag">千歳会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 18 / 20 / 27 / 29 / 21 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">115</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num rank-3">🥉</div><div class="info-box"><div class="name-container"><span class="name-main">4-第2投者</span><span class="team-tag">千歳会B</span></div><div style="font-size:0.95rem;color:#555;">履歴: 17 / 16 / 31 / 35 / 11 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">110</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">4位</div><div class="info-box"><div class="name-container"><span class="name-main">3-第4投者</span><span class="team-tag">千歳会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 16 / 13 / 14 / 35 / 31 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">109</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">5位</div><div class="info-box"><div class="name-container"><span class="name-main">3-第3投者</span><span class="team-tag">千歳会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 8 / 19 / 22 / 32 / 18 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">99</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">6位</div><div class="info-box"><div class="name-container"><span class="name-main">7-第1投者</span><span class="team-tag">みずき会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 10 / 15 / 5 / 30 / 35 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">95</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">7位</div><div class="info-box"><div class="name-container"><span class="name-main">5-第1投者</span><span class="team-tag">千歳廻寿会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 34 / 20 / 20 / 14 / 5 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">93</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">8位</div><div class="info-box"><div class="name-container"><span class="name-main">7-第3投者</span><span class="team-tag">みずき会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 34 / 23 / 9 / 13 / 13 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">92</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">9位</div><div class="info-box"><div class="name-container"><span class="name-main">2-第5投者</span><span class="team-tag">日の丸会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 32 / 28 / 8 / 0 / 23 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">91</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">10位</div><div class="info-box"><div class="name-container"><span class="name-main">1-第5投者</span><span class="team-tag">成城若葉会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 17 / 24 / 20 / 13 / 11 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">85</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">11位</div><div class="info-box"><div class="name-container"><span class="name-main">3-第2投者</span><span class="team-tag">千歳会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 16 / 7 / 10 / 35 / 15 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">83</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">12位</div><div class="info-box"><div class="name-container"><span class="name-main">3-第5投者</span><span class="team-tag">千歳会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 27 / 3 / 14 / 20 / 19 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">83</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">13位</div><div class="info-box"><div class="name-container"><span class="name-main">4-第5投者</span><span class="team-tag">千歳会B</span></div><div style="font-size:0.95rem;color:#555;">履歴: 24 / 18 / 25 / 0 / 15 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">82</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">14位</div><div class="info-box"><div class="name-container"><span class="name-main">5-第2投者</span><span class="team-tag">千歳廻寿会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 17 / 11 / 28 / 12 / 13</div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">81</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">15位</div><div class="info-box"><div class="name-container"><span class="name-main">7-第5投者</span><span class="team-tag">みずき会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 15 / 30 / 10 / 0 / 21 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">76</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">16位</div><div class="info-box"><div class="name-container"><span class="name-main">9-第2投者</span><span class="team-tag">光寿会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 11 / 14 / 12 / 18 / 20 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">75</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">17位</div><div class="info-box"><div class="name-container"><span class="name-main">9-第1投者</span><span class="team-tag">光寿会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 15 / 9 / 11 / 24 / 13 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">72</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">18位</div><div class="info-box"><div class="name-container"><span class="name-main">6-第1投者</span><span class="team-tag">上北沢幸友会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 12 / 20 / 5 / 24 / 11 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">72</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">19位</div><div class="info-box"><div class="name-container"><span class="name-main">8-第5投者</span><span class="team-tag">七福会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 9 / 25 / 7 / 12 / 19 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">72</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">20位</div><div class="info-box"><div class="name-container"><span class="name-main">4-第4投者</span><span class="team-tag">千歳会B</span></div><div style="font-size:0.95rem;color:#555;">履歴: 20 / 7 / 15 / 8 / 21 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">71</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">21位</div><div class="info-box"><div class="name-container"><span class="name-main">1-第1投者</span><span class="team-tag">成城若葉会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 9 / 25 / 15 / 20 / 1 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">70</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">22位</div><div class="info-box"><div class="name-container"><span class="name-main">4-第3投者</span><span class="team-tag">千歳会B</span></div><div style="font-size:0.95rem;color:#555;">履歴: 9 / 16 / 20 / 17 / 8 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">70</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">23位</div><div class="info-box"><div class="name-container"><span class="name-main">7-第2投者</span><span class="team-tag">みずき会A</span></div><div style="font-size:0.95rem;color:#555;">履歴: 19 / 8 / 9 / 22 / 6 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">64</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">24位</div><div class="info-box"><div class="name-container"><span class="name-main">2-第1投者</span><span class="team-tag">日の丸会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 4 / 17 / 9 / 10 / 13 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">53</span><span class="score-unit">点</span></div></div></div>
-       <div class="rank-card"><div class="card-main-content"><div class="rank-num">25位</div><div class="info-box"><div class="name-container"><span class="name-main">6-第3投者</span><span class="team-tag">上北沢幸友会</span></div><div style="font-size:0.95rem;color:#555;">履歴: 7 / 22 / 6 / 12 / 2 </div><div style="font-size:0.9rem;color:#555;margin-top:2px;">(5試合)</div></div><div class="score-box"><span class="score-num">49</span><span class="score-unit">点</span></div></div></div>
 
-`;
-       document.getElementById('player-panel').innerHTML = playerPanelHtml;
-     </script>
-   </div>
- </div>
+    <h1>砧高協輪投げ大会 成績一覧</h1>
+    
+    <div class="menu-box">
+        <!-- 最新の第12回へのリンク -->
+        <a href="./vol12/" class="btn">🏆 第12回大会（最新）</a>
+        
+        <!-- 過去の第11回へのリンク -->
+        <a href="./vol11/" class="btn past">📜 第11回大会の結果</a>
+    </div>
 
- <script>
- function switchTab(tabType) {
-   const teamPanel = document.getElementById('team-panel');
-   const playerPanel = document.getElementById('player-panel');
-   const btns = document.querySelectorAll('.tab-btn');
-   
-   if (tabType === 'team') {
-     teamPanel.classList.add('active');
-     playerPanel.classList.remove('active');
-     btns[0].classList.add('active');
-     btns[1].classList.remove('active');
-   } else {
-     teamPanel.classList.remove('active');
-     playerPanel.classList.add('active');
-     btns[0].classList.remove('active');
-     btns[1].classList.add('active');
-   }
- }
- </script>
 </body>
 </html>
